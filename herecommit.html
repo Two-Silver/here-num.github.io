@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Here - 맥락 기반 장소 추천</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 60px 24px;
+      font-family: 'Apple SD Gothic Neo', sans-serif;
+      background: linear-gradient(180deg, #d4e3ff 0%, #f0f4ff 100%);
+      text-align: center;
+    }
+
+    .title {
+      font-size: 32px;
+      font-weight: 800;
+      color: #111;
+      margin-bottom: 12px;
+    }
+
+    .logo {
+      font-size: 72px;
+      font-weight: 900;
+      color: #2979ff;
+      margin: 0 auto 28px;
+    }
+
+    .description {
+      font-size: 17px;
+      line-height: 1.8;
+      color: #444;
+      margin-bottom: 20px;
+    }
+
+    .description.sub {
+      font-size: 15px;
+      color: #777;
+      margin-top: -8px;
+    }
+
+    .cta-button {
+      background-color: #2979ff;
+      color: white;
+      font-weight: 600;
+      font-size: 16px;
+      padding: 14px 32px;
+      border-radius: 30px;
+      border: none;
+      margin-top: 30px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    .footer {
+      font-size: 12px;
+      color: #999;
+      margin-top: 40px;
+    }
+
+    .bot-img {
+      width: 160px;
+      height: auto;
+      object-fit: contain;
+      margin: 40px auto 0;
+      display: block;
+      border: none;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .modal-content {
+      background: #fff;
+      padding: 30px 20px;
+      border-radius: 12px;
+      text-align: center;
+      width: 90%;
+      max-width: 360px;
+    }
+
+    input[type="text"] {
+      width: 80%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+
+    .submit-btn {
+      background-color: #2979ff;
+      color: white;
+      padding: 10px 22px;
+      border: none;
+      border-radius: 25px;
+      margin-top: 12px;
+      cursor: pointer;
+    }
+
+    .thank-you {
+      margin-top: 20px;
+      font-size: 15px;
+      color: green;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="title">일상을 바꾸는 AI 추천</div>
+  <div class="logo">Here</div>
+  <div class="description">
+    Here는 대화 속 맥락을 이해해 지금 딱 맞는 장소를 추천해주는 AI 서비스입니다.<br>
+    "혼자 집중하기 좋은 카페", "분위기 있는 와인바"처럼<br>
+    당신의 상황과 감정에 맞는 공간을 정교하게 제안해드려요.
+  </div>
+  <div class="description sub">
+    현재는 베타 서비스 운영 중이며,<br>
+    대기 신청하신 분들께 순차적으로 안내드릴 예정입니다.<br>
+    사용자 피드백을 반영해 지속적으로 발전 중이에요.
+  </div>
+  <button class="cta-button" onclick="openModal()">대기 신청하기</button>
+  <img src="here.png" alt="Here 캐릭터" class="bot-img">
+  <div class="footer">※ 인터넷 익스플로러 등 일부 브라우저에서는 지원되지 않을 수 있습니다.</div>
+
+  <div class="modal" id="modal">
+    <div class="modal-content">
+      <h3>이메일 또는 연락처를 입력해주세요</h3>
+      <input type="text" id="userInput" placeholder="example@email.com 또는 010-1234-5678" />
+      <br />
+      <button class="submit-btn" onclick="submitForm()">제출하기</button>
+      <div class="thank-you" id="thankYouMsg">신청 완료! 곧 연락드릴게요 🙌</div>
+    </div>
+  </div>
+
+  <script>
+    function openModal() {
+      document.getElementById("modal").style.display = "flex";
+    }
+
+    function submitForm() {
+      const input = document.getElementById("userInput").value;
+      if (input.trim() === "") {
+        alert("값을 입력해주세요.");
+        return;
+      }
+
+      fetch("https://script.google.com/macros/s/AKfycbzdHa3mw5xM2e-FACXeCFF_Ad1FH19uPwg_lcAGSnY4tKf_EwEuED6eEGJFph5zDfqppw/exec", {
+        method: "POST",
+        mode: "no-cors",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ input })
+      })
+      .then(() => {
+        document.getElementById("thankYouMsg").style.display = "block";
+        document.getElementById("userInput").value = "";
+      });
+    }
+
+    window.onclick = function(e) {
+      const modal = document.getElementById("modal");
+      if (e.target == modal) {
+        modal.style.display = "none";
+      }
+    };
+  </script>
+</body>
+</html>
